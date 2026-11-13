@@ -346,7 +346,9 @@ except ValueError as e:
 structlog.configure(
     processors=[
         structlog.processors.ExceptionRenderer(
-            structlog.tracebacks.ExceptionDictTransformer()
+            structlog.tracebacks.ExceptionDictTransformer(
+                redact_locals=("password", "*token*")
+            )
         ),
         structlog.processors.JSONRenderer(),
     ]

@@ -33,6 +33,48 @@ The most common use-cases are already covered by the following processors:
 If these prove insufficient, see {ref}`Custom Filtering of Dict Tracebacks <custom-dict-tracebacks>`.
 
 
+### Redacting Local Variables
+
+If you log local variables (the default for dict tracebacks), secrets like passwords or access tokens end up in your monitoring backend.
+Filtering the rendered JSON afterwards is not enough: by then the value has already been passed through `repr()` -- or Rich's pretty printer, which recursively walks objects -- and some objects trigger network calls or raise when rendered.
+
+`ExceptionDictTransformer` therefore takes a `redact_locals` argument with a list of case-insensitive [glob patterns](https://docs.python.org/3/library/fnmatch.html).
+A matching local keeps its name, but its value is replaced with the fixed string `"<redacted>"` *before* any rendering happens, so neither `repr()`, `str()`, Rich's pretty protocol nor recursive traversal is ever invoked on it.
+Variables that don't match a pattern continue to follow the regular `locals_max_length`, `locals_max_string` and dunder/sunder rules.
+The patterns are copied into a frozen tuple when the transformer is constructed, so mutating your original list later does not affect logging.
+
+The same rules apply to every exception in the trace: regular exceptions, explicit causes (`raise ... from ...`), implicit exception contexts and every branch of an `ExceptionGroup`.
+Frames hidden through `suppress=` or rendered with `show_locals=False` are never inspected in the first place.
+
+```python
+import structlog
+from structlog.processors import ExceptionRenderer, JSONRenderer
+from structlog.tracebacks import ExceptionDictTransformer
+
+structlog.configure(
+    processors=[
+        ExceptionRenderer(
+            ExceptionDictTransformer(
+                redact_locals=("password", "*token*", "*secret*"),
+            )
+        ),
+        JSONRenderer(),
+    ]
+)
+
+logger = structlog.get_logger()
+
+try:
+    ...
+except Exception:
+    # Matching locals appear as {"password": "<redacted>"} in the JSON.
+    logger.exception("request failed")
+```
+
+Note that redaction only covers frame locals selected by variable name.
+Sensitive text embedded in an exception *message* itself is not detected automatically.
+
+
 ## Console rendering
 
 Our {doc}`console-output`'s {class}`structlog.dev.ConsoleRenderer` takes an *exception_formatter* argument that allows for customizing the output of exceptions.

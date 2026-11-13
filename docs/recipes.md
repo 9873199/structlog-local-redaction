@@ -153,12 +153,15 @@ Dict traceback printing via {class}`structlog.tracebacks.ExceptionDictTransforme
 For example, tokens and credentials are easily captured in locals and logged.
 
 As a simple control, you can set `show_locals=False`.
+For redacting selected locals by variable name, prefer the built-in `redact_locals` argument -- unlike the post-processing below, it replaces the value *before* `repr()` or Rich's pretty printer ever touches it.
+See {doc}`exceptions` for details.
 For more extensive customization, subclass the transformer.
 
 {class}`ExceptionDictTransformer <structlog.tracebacks.ExceptionDictTransformer>`'s `__call__` is responsible for converting exception info into a list of dicts.
 Because this is only called during exception handling, it's an ideal point of control for potentially expensive filtering functionality.
 
 The following example customizes the transformer to redact values in `locals` named `"token"` or `"password"`.
+Note that this approach runs *after* the values have been rendered to strings, so it cannot prevent side effects of `repr()`; use `redact_locals` when that matters.
 
 ```
 from structlog.tracebacks import ExceptionDictTransformer

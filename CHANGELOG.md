@@ -15,6 +15,13 @@ You can find our backwards-compatibility policy [here](https://github.com/hynek/
 
 ## [Unreleased](https://github.com/hynek/structlog/compare/26.1.0...HEAD)
 
+### Added
+
+- `structlog.tracebacks.ExceptionDictTransformer` and `structlog.tracebacks.extract()` now take a `redact_locals` argument: an iterable of case-insensitive `fnmatch` glob patterns.
+  Local variables whose name matches are kept by name with their value fixed to `"<redacted>"`, without ever calling `repr()`, `str()`, Rich's pretty protocol or recursively traversing the value.
+  The patterns are copied into a frozen tuple at construction time.
+  The rule applies to regular exceptions, explicit causes, implicit contexts and every `ExceptionGroup` branch; suppressed frames and `show_locals=False` are not touched.
+
 ### Changed
 
 - On Python 3.15 and later, *structlog* uses [PEP 810](https://peps.python.org/pep-0810/) lazy imports for modules that are only needed once you log.

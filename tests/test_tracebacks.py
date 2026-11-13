@@ -7,6 +7,7 @@ from __future__ import annotations
 
 import asyncio
 import inspect
+import io
 import json
 import sys
 
@@ -1202,3 +1203,354 @@ def test_exception_cycle():
         )
         == trace.stacks[0]
     )
+
+
+class CountingSecret:
+    """
+    A stand-in for a sensitive value.
+
+    Every way structlog could stringify it is counted and raises, so a test
+    failure both proves the value was touched and shows where it would leak.
+    """
+
+    def __init__(self, tag: str) -> None:
+        self.tag = tag
+        self.repr_count = 0
+        self.rich_count = 0
+
+    def __repr__(self) -> str:
+        self.repr_count += 1
+        raise AssertionError(f"repr() must not be called on {self.tag}")
+
+    def __str__(self) -> str:
+        self.repr_count += 1
+        raise AssertionError(f"str() must not be called on {self.tag}")
+
+    def __rich_repr__(self):
+        self.rich_count += 1
+        yield "secret", self.tag
+
+
+def _assert_not_rendered(*secrets: CountingSecret) -> None:
+    for secret in secrets:
+        assert secret.repr_count == 0, secret.tag
+        assert secret.rich_count == 0, secret.tag
+
+
+@pytest.mark.parametrize("use_rich", [True, False])
+def test_redact_locals_before_any_rendering(use_rich: bool) -> None:
+    """
+    Redacted locals keep their name but never reach repr(), str() or Rich's
+    pretty protocol, while ordinary locals are rendered as before.
+    """
+    password = CountingSecret("pw")
+
+    def boom(password, harmless):
+        1 / 0
+
+    try:
+        boom(password, 42)
+    except ZeroDivisionError as e:
+        # The autouse fixture un-imports rich; restore it when available to
+        # prove the real Rich traversal cannot reach a redacted value.
+        with patch.object(tracebacks, "rich", rich):
+            result = tracebacks.ExceptionDictTransformer(
+                show_locals=True,
+                # Upper-case pattern proves matching is case-insensitive.
+                redact_locals=("PASSWORD",),
+                use_rich=use_rich,
+            )((type(e), e, e.__traceback__))
+
+    frame = result[0]["frames"][-1]
+    assert frame["name"] == "boom"
+    assert frame["locals"]["password"] == tracebacks.REDACTED
+    assert frame["locals"]["harmless"] == "42"
+    _assert_not_rendered(password)
+
+
+def test_redact_locals_keeps_other_locals_rules() -> None:
+    """
+    Variables that don't match a glob still follow locals_max_string and the
+    other regular rules.
+    """
+
+    password = CountingSecret("pw")
+
+    def boom(password, plain):
+        1 / 0
+
+    try:
+        boom(password, "spamspamspam")
+    except ZeroDivisionError as e:
+        result = tracebacks.ExceptionDictTransformer(
+            show_locals=True,
+            redact_locals=("password",),
+            locals_max_string=4,
+        )((type(e), e, e.__traceback__))
+
+    locals_ = result[0]["frames"][-1]["locals"]
+    assert locals_["password"] == tracebacks.REDACTED
+    assert locals_["plain"] == "'spam'+8"
+    _assert_not_rendered(password)
+
+
+def test_redact_locals_precedence_over_hide_rules() -> None:
+    """
+    A matched variable keeps its name even if it would be hidden as a
+    dunder/sunder; unmatched dunder variables stay hidden.
+    """
+    password = CountingSecret("pw")
+
+    def boom(password):
+        __password = password
+        __ordinary = 1
+        1 / 0
+
+    try:
+        boom(password)
+    except ZeroDivisionError as e:
+        result = tracebacks.ExceptionDictTransformer(
+            show_locals=True,
+            redact_locals=("*password*",),
+        )((type(e), e, e.__traceback__))
+
+    locals_ = result[0]["frames"][-1]["locals"]
+    assert locals_["__password"] == tracebacks.REDACTED
+    assert "__ordinary" not in locals_
+    _assert_not_rendered(password)
+
+
+def test_redact_locals_extract_directly() -> None:
+    """
+    extract() accepts redact_locals itself and redacts before rendering.
+    """
+    password = CountingSecret("pw")
+
+    def boom(password):
+        1 / 0
+
+    try:
+        boom(password)
+    except ZeroDivisionError as e:
+        trace = tracebacks.extract(
+            type(e),
+            e,
+            e.__traceback__,
+            show_locals=True,
+            redact_locals=("password",),
+        )
+
+    assert trace.stacks[0].frames[-1].locals == {
+        "password": tracebacks.REDACTED
+    }
+    _assert_not_rendered(password)
+
+
+def test_redact_locals_cause_and_context() -> None:
+    """
+    The same sensitive objects, bound to differently named locals along an
+    explicit cause and an implicit context chain, are all redacted.
+    """
+    password = CountingSecret("pw")
+    token = CountingSecret("tok")
+
+    def deep(db_password):
+        raise ValueError("deep failure")
+
+    def middle(access_token):
+        try:
+            deep(password)
+        except ValueError:
+            raise RuntimeError("handling failed")  # noqa: B904
+
+    def top(api_token):
+        try:
+            middle(token)
+        except RuntimeError as orig:
+            raise KeyError("top failure") from orig  # explicit cause
+
+    try:
+        top(token)
+    except KeyError as e:
+        result = tracebacks.ExceptionDictTransformer(
+            show_locals=True,
+            redact_locals=("*password*", "*token*"),
+        )((type(e), e, e.__traceback__))
+
+    rendered = {}
+    for stack in result:
+        for frame in stack["frames"]:
+            rendered.update(frame.get("locals") or {})
+
+    assert rendered["db_password"] == tracebacks.REDACTED
+    assert rendered["access_token"] == tracebacks.REDACTED
+    assert rendered["api_token"] == tracebacks.REDACTED
+    _assert_not_rendered(password, token)
+
+
+@pytest.mark.skipif(
+    sys.version_info < (3, 11), reason="Requires Python 3.11 or higher"
+)
+def test_redact_locals_exception_group_branches() -> None:
+    """
+    Every branch of an ExceptionGroup applies the same rule, including when
+    the same sensitive object appears under different variable names.
+    """
+    password = CountingSecret("shared")
+    token = CountingSecret("other")
+
+    async def branch_one(password):
+        1 / 0
+
+    async def branch_two(access_token):
+        raise ValueError("boom")
+
+    async def main():
+        async with asyncio.TaskGroup() as tg:
+            tg.create_task(branch_one(password))
+            tg.create_task(branch_two(token))
+
+    try:
+        asyncio.run(main())
+    except BaseException as e:
+        with patch.object(tracebacks, "rich", rich):
+            result = tracebacks.ExceptionDictTransformer(
+                show_locals=True,
+                redact_locals=("password", "*token*"),
+                use_rich=True,
+            )((type(e), e, e.__traceback__))
+
+    redacted = {
+        name: value
+        for branch in result[0]["exceptions"]
+        for stack in branch
+        for frame in stack["frames"]
+        for name, value in (frame.get("locals") or {}).items()
+        if name in ("password", "access_token")
+    }
+
+    assert redacted == {
+        "password": tracebacks.REDACTED,
+        "access_token": tracebacks.REDACTED,
+    }
+    _assert_not_rendered(password, token)
+
+
+def test_redact_locals_frozen_copy() -> None:
+    """
+    Mutating the caller's pattern list after construction does not change the
+    redaction policy in effect.
+    """
+    patterns = ["password"]
+    transformer = tracebacks.ExceptionDictTransformer(redact_locals=patterns)
+    assert transformer.redact_locals == ("password",)
+
+    patterns.append("*")
+    patterns[0] = "something-else"
+
+    assert transformer.redact_locals == ("password",)
+
+    password = CountingSecret("pw")
+
+    def boom(password):
+        1 / 0
+
+    try:
+        boom(password)
+    except ZeroDivisionError as e:
+        result = transformer((type(e), e, e.__traceback__))
+
+    assert result[0]["frames"][-1]["locals"]["password"] == tracebacks.REDACTED
+    _assert_not_rendered(password)
+
+
+def test_redact_locals_disabled_or_suppressed_frames_untouched() -> None:
+    """
+    With show_locals=False or a suppressed frame, local values are never
+    inspected at all.
+    """
+    password = CountingSecret("pw")
+
+    def boom(password):
+        1 / 0
+
+    try:
+        boom(password)
+    except ZeroDivisionError as e:
+        result = tracebacks.ExceptionDictTransformer(
+            show_locals=False, redact_locals=("password",)
+        )((type(e), e, e.__traceback__))
+    assert "locals" not in result[0]["frames"][-1]
+    _assert_not_rendered(password)
+
+    try:
+        boom(password)
+    except ZeroDivisionError as e:
+        result = tracebacks.ExceptionDictTransformer(
+            show_locals=True,
+            redact_locals=("password",),
+            suppress=(__file__,),
+        )((type(e), e, e.__traceback__))
+    for stack in result:
+        for frame in stack["frames"]:
+            assert "locals" not in frame
+    _assert_not_rendered(password)
+
+
+def test_redact_locals_json_renderer_pipeline() -> None:
+    """
+    The full monitoring chain -- ExceptionRenderer with a custom transformer
+    followed by JSONRenderer -- emits redacted locals as JSON while ordinary
+    locals remain visible.
+    """
+    sio = io.StringIO()
+    old_processors = structlog.get_config()["processors"]
+    structlog.configure(
+        processors=[
+            structlog.processors.ExceptionRenderer(
+                tracebacks.ExceptionDictTransformer(
+                    show_locals=True,
+                    redact_locals=("password",),
+                )
+            ),
+            structlog.processors.JSONRenderer(),
+        ],
+        logger_factory=structlog.WriteLoggerFactory(sio),
+    )
+    password = CountingSecret("pw")
+
+    def boom(password, ok):
+        1 / 0
+
+    try:
+        boom(password, "visible")
+    except ZeroDivisionError:
+        structlog.get_logger("monitoring").exception("request failed")
+    finally:
+        structlog.configure(processors=old_processors)
+
+    payload = json.loads(sio.getvalue())
+    assert payload["event"] == "request failed"
+    frame = payload["exception"][0]["frames"][-1]
+    assert frame["locals"]["password"] == tracebacks.REDACTED
+    assert frame["locals"]["ok"] == "'visible'"
+    _assert_not_rendered(password)
+
+
+def test_redact_locals_default_is_empty() -> None:
+    """
+    Without redact_locals, no patterns are configured and default output is
+    unchanged.
+    """
+    transformer = tracebacks.ExceptionDictTransformer()
+    assert transformer.redact_locals == ()
+
+    def boom(my_local):
+        1 / 0
+
+    try:
+        boom("spam")
+    except ZeroDivisionError as e:
+        result = transformer((type(e), e, e.__traceback__))
+
+    assert result[0]["frames"][-1]["locals"]["my_local"] == "'spam'"

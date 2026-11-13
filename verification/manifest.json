@@ -1,0 +1,178 @@
+{
+  "created": "2026-11-13T18:12:31+08:00",
+  "reviewed": true,
+  "reviewer": "Codex primary agent, AI-assisted",
+  "uid": 1747,
+  "frozen_commit": "0da4f4c353df94595b753885b4bc248b78779f83",
+  "native_trajectory_sha256": "ae50387e8288df1ac779f1dfa980afbd44356dc1938f29bf1b7beb9284fd4ddf",
+  "files": [
+    {
+      "source": "D:\\hc\\userFeedback\\cache\\execution-security-new11-20261112\\evaluation\\uf-20261112-new15-logs\\freeze.json",
+      "path": "freeze.json",
+      "sha256": "bfa5fcbb49e6291b4af94b114fac55fbbdd057525ce20a56eee78e35e2e914f7"
+    },
+    {
+      "source": "D:\\hc\\userFeedback\\cache\\execution-security-new11-20261112\\evaluation\\uf-20261112-new15-logs\\freeze-audit.json",
+      "path": "freeze-audit.json",
+      "sha256": "89ccb3f45906e3b5f625cbc6959f61b0c0c8cf284a0312c611a026ec009cfd8a"
+    },
+    {
+      "source": "D:\\hc\\userFeedback\\cache\\execution-security-new11-20261112\\evaluation\\uf-20261112-new15-logs\\environment-reviewed.json",
+      "path": "environment-reviewed.json",
+      "sha256": "efca9ae6d725ca6dd5710b20a49b26026d07f5de373560e19ddcbb9d0200c475"
+    },
+    {
+      "source": "D:\\hc\\userFeedback\\cache\\execution-security-new11-20261112\\evaluation\\uf-20261112-new15-logs\\evidence-map.json",
+      "path": "evidence-map.json",
+      "sha256": "910b93374883ec0a4714ed21b60d5a7bd9df6ba7769f11b69d8278adf06abe25"
+    },
+    {
+      "source": "D:\\hc\\userFeedback\\cache\\execution-security-new11-20261112\\evaluation\\uf-20261112-new15-logs\\model-final-answer.txt",
+      "path": "model-final-answer.txt",
+      "sha256": "71277e23c65ab5ac69af6acd3d70a7ade6fb5007be3c69f2d100a3cd8ee94933"
+    },
+    {
+      "source": "D:\\hc\\userFeedback\\cache\\execution-security-new11-20261112\\evaluation\\uf-20261112-new15-logs\\test-results.json",
+      "path": "test-results.json",
+      "sha256": "ae5681db4dbc392127ff1a2e1ff01b1679eabd88ef35229d6d52c302d24de358"
+    },
+    {
+      "source": "D:\\hc\\userFeedback\\cache\\execution-security-new11-20261112\\evaluation\\uf-20261112-new15-logs\\evaluation-qc.json",
+      "path": "evaluation-qc.json",
+      "sha256": "d4eea560112d256bbb6b015419b33d587742ee7c6f9aa52b7dce5c77116d5adb"
+    },
+    {
+      "source": "D:\\hc\\userFeedback\\cache\\execution-security-new11-20261112\\evaluation\\uf-20261112-new15-logs\\verification\\acceptance-r1\\actual-import.json",
+      "path": "verification/acceptance-r1/actual-import.json",
+      "sha256": "e803055e776c0379e93551d53c4307f5513f1588486d29ede86002551ec389f1"
+    },
+    {
+      "source": "D:\\hc\\userFeedback\\cache\\execution-security-new11-20261112\\evaluation\\uf-20261112-new15-logs\\verification\\acceptance-r1\\actual-import.stderr.log",
+      "path": "verification/acceptance-r1/actual-import.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "D:\\hc\\userFeedback\\cache\\execution-security-new11-20261112\\evaluation\\uf-20261112-new15-logs\\verification\\acceptance-r1\\actual-import.stdout.log",
+      "path": "verification/acceptance-r1/actual-import.stdout.log",
+      "sha256": "3ed36bc21cb5493ce185caa1cda76bef80a7d2ef8a5f014986de697904ca3cc9"
+    },
+    {
+      "source": "D:\\hc\\userFeedback\\cache\\execution-security-new11-20261112\\evaluation\\uf-20261112-new15-logs\\verification\\acceptance-r1\\dependency-lock.json",
+      "path": "verification/acceptance-r1/dependency-lock.json",
+      "sha256": "65fd7e4b98453d6f0bc5ae34ae8a95467fd6c96ca8b560726ba160c00d51ae1d"
+    },
+    {
+      "source": "D:\\hc\\userFeedback\\cache\\execution-security-new11-20261112\\evaluation\\uf-20261112-new15-logs\\verification\\acceptance-r1\\dependency-lock.stderr.log",
+      "path": "verification/acceptance-r1/dependency-lock.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "D:\\hc\\userFeedback\\cache\\execution-security-new11-20261112\\evaluation\\uf-20261112-new15-logs\\verification\\acceptance-r1\\dependency-lock.stdout.log",
+      "path": "verification/acceptance-r1/dependency-lock.stdout.log",
+      "sha256": "86a42145ad58ab8fc70c5e8060c121b1aeffc94cc3dad08ca1e77b4d697d65a4"
+    },
+    {
+      "source": "D:\\hc\\userFeedback\\cache\\execution-security-new11-20261112\\evaluation\\uf-20261112-new15-logs\\verification\\acceptance-r1\\locals-contract.json",
+      "path": "verification/acceptance-r1/locals-contract.json",
+      "sha256": "f7e8910b10cc091f22731fd10317289dc2e7431d0c072c47e790f50a1b79810f"
+    },
+    {
+      "source": "D:\\hc\\userFeedback\\cache\\execution-security-new11-20261112\\evaluation\\uf-20261112-new15-logs\\verification\\acceptance-r1\\locals-contract.stderr.log",
+      "path": "verification/acceptance-r1/locals-contract.stderr.log",
+      "sha256": "6e80fde7a1772ca317f08b81b52ac7d7dc7a03f834e2813ec4b5d9b20f07a883"
+    },
+    {
+      "source": "D:\\hc\\userFeedback\\cache\\execution-security-new11-20261112\\evaluation\\uf-20261112-new15-logs\\verification\\acceptance-r1\\locals-contract.stdout.log",
+      "path": "verification/acceptance-r1/locals-contract.stdout.log",
+      "sha256": "a0ec6acccef940ca593cd425359780a48f8747e4ad2144c02370fa074a751c45"
+    },
+    {
+      "source": "D:\\hc\\userFeedback\\cache\\execution-security-new11-20261112\\evaluation\\uf-20261112-new15-logs\\verification\\acceptance-r1\\log-privacy-demo.py",
+      "path": "verification/acceptance-r1/log-privacy-demo.py",
+      "sha256": "0b4d5db5acae0989bc8f108a59a7c73e8a0be7ebd363b9d5300648da36f505b4"
+    },
+    {
+      "source": "D:\\hc\\userFeedback\\cache\\execution-security-new11-20261112\\evaluation\\uf-20261112-new15-logs\\verification\\acceptance-r1\\package-suite.json",
+      "path": "verification/acceptance-r1/package-suite.json",
+      "sha256": "357f33ae7d01d890ee3dd98494700cbf8a226a59c9568f2789d1dbae5e5874ab"
+    },
+    {
+      "source": "D:\\hc\\userFeedback\\cache\\execution-security-new11-20261112\\evaluation\\uf-20261112-new15-logs\\verification\\acceptance-r1\\package-suite.stderr.log",
+      "path": "verification/acceptance-r1/package-suite.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "D:\\hc\\userFeedback\\cache\\execution-security-new11-20261112\\evaluation\\uf-20261112-new15-logs\\verification\\acceptance-r1\\package-suite.stdout.log",
+      "path": "verification/acceptance-r1/package-suite.stdout.log",
+      "sha256": "686f6442235b2571792f1e74fd396b19894360024ffb37faa98baa8978eeb466"
+    },
+    {
+      "source": "D:\\hc\\userFeedback\\cache\\execution-security-new11-20261112\\evaluation\\uf-20261112-new15-logs\\verification\\acceptance-r1\\replay-proof.json",
+      "path": "verification/acceptance-r1/replay-proof.json",
+      "sha256": "910f4b511118046f5666119205008804a7be683b2b1b2acb323b0a8dad6961bd"
+    },
+    {
+      "source": "D:\\hc\\userFeedback\\cache\\execution-security-new11-20261112\\evaluation\\uf-20261112-new15-logs\\verification\\acceptance-r1\\reproduction-notes.md",
+      "path": "verification/acceptance-r1/reproduction-notes.md",
+      "sha256": "711f2985bbf4c9a76a2ff764e396746fd70ba9fd0edaaf0ddc33c298d67251fc"
+    },
+    {
+      "source": "D:\\hc\\userFeedback\\cache\\execution-security-new11-20261112\\evaluation\\uf-20261112-new15-logs\\verification\\acceptance-r1\\reviewed-spec.json",
+      "path": "verification/acceptance-r1/reviewed-spec.json",
+      "sha256": "4c62b5483d80ef46da45fce9bd2e3aa4692db57039af38c1975128c7816953e1"
+    },
+    {
+      "source": "D:\\hc\\userFeedback\\cache\\execution-security-new11-20261112\\evaluation\\uf-20261112-new15-logs\\verification\\acceptance-r1\\runtime-requirements.txt",
+      "path": "verification/acceptance-r1/runtime-requirements.txt",
+      "sha256": "1590cf1449262c2b640cc01425f2be10d2d6832c62346976a68427d6eed6203c"
+    },
+    {
+      "source": "D:\\hc\\userFeedback\\cache\\execution-security-new11-20261112\\evaluation\\uf-20261112-new15-logs\\verification\\acceptance-r1\\test_locals_contract.py",
+      "path": "verification/acceptance-r1/test_locals_contract.py",
+      "sha256": "523a32b2b0e0a896e93e0039223c0bedd76cdb5dbbe94a7fea22e6bbadf3d0e5"
+    },
+    {
+      "source": "D:\\hc\\userFeedback\\cache\\execution-security-new11-20261112\\evaluation\\uf-20261112-new15-logs\\verification\\acceptance-r1\\traceback-suite.json",
+      "path": "verification/acceptance-r1/traceback-suite.json",
+      "sha256": "0829721c49c927a7a9c659cb7e2d7b6231765fa75ce0219d39448f8ade093a0e"
+    },
+    {
+      "source": "D:\\hc\\userFeedback\\cache\\execution-security-new11-20261112\\evaluation\\uf-20261112-new15-logs\\verification\\acceptance-r1\\traceback-suite.stderr.log",
+      "path": "verification/acceptance-r1/traceback-suite.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "D:\\hc\\userFeedback\\cache\\execution-security-new11-20261112\\evaluation\\uf-20261112-new15-logs\\verification\\acceptance-r1\\traceback-suite.stdout.log",
+      "path": "verification/acceptance-r1/traceback-suite.stdout.log",
+      "sha256": "ef2e8ee265938126d6a740f2ca5b93366eb6561447c1700030bd6fa9f5e5faec"
+    },
+    {
+      "source": "D:\\hc\\userFeedback\\cache\\execution-security-new11-20261112\\evaluation\\uf-20261112-new15-logs\\verification\\recorded-runtime-r1\\actual-commands.json",
+      "path": "verification/recorded-runtime-r1/actual-commands.json",
+      "sha256": "9fa1ca15810e8f2b8f957273ba74716c83b3e060f81c53e021717cfa88d918ad"
+    },
+    {
+      "source": "D:\\hc\\userFeedback\\cache\\execution-security-new11-20261112\\evaluation\\uf-20261112-new15-logs\\verification\\recorded-runtime-r1\\privacy-contract-output.log",
+      "path": "verification/recorded-runtime-r1/privacy-contract-output.log",
+      "sha256": "c6b074c2efd86ebe02306b95cf8412757e6ea7e9a9914caea17355e143888faa"
+    },
+    {
+      "source": "D:\\hc\\userFeedback\\cache\\execution-security-new11-20261112\\evaluation\\uf-20261112-new15-logs\\verification\\recorded-runtime-r1\\privacy-demo-output.log",
+      "path": "verification/recorded-runtime-r1/privacy-demo-output.log",
+      "sha256": "696caae58cf0fbc7f6872ba298ea497b796668fa96c72ab71df81c07e9189ad3"
+    },
+    {
+      "source": "D:\\hc\\userFeedback\\cache\\execution-security-new11-20261112\\evaluation\\uf-20261112-new15-logs\\verification\\recorded-runtime-r1\\spec.json",
+      "path": "verification/recorded-runtime-r1/spec.json",
+      "sha256": "8b217c10e8cbe6b2429fec9544fc32451edc64e06bc2465c3b872cc4def3ab3e"
+    },
+    {
+      "source": "D:\\hc\\userFeedback\\cache\\execution-security-new11-20261112\\evaluation\\uf-20261112-new15-logs\\verification\\recorded-runtime-r1\\traceback-suite-output.log",
+      "path": "verification/recorded-runtime-r1/traceback-suite-output.log",
+      "sha256": "fa71ca703b6a87d683407d5f98ba112e449ac71e7b3e7be7f8e0006e9289d676"
+    }
+  ],
+  "reproduction_readme": "Windows Python 3.14.3; pure Python structlog with the task's pinned test dependencies, including Rich. No container or external runtime service. Create a fresh venv, install verification/acceptance-r1/runtime-requirements.txt and install the exact product source with pip install --no-deps -e . . Put the product src directory, product root and verification/acceptance-r1 on PYTHONPATH. Confirm structlog.__file__ and structlog.tracebacks.__file__ refer to the exact source.\n\nRun python -B -m pytest -q -o addopts= -p no:cacheprovider --tb=short verification/acceptance-r1/test_locals_contract.py: 13 pass. These exercise Rich enabled/disabled; extract, transformer and real ExceptionRenderer+JSONRenderer; cause/context/nested groups; mutable caller configuration; suppressed and hidden frames; ordinary defaults. The secret object's representation protocols count and raise if touched; selected names retain <redacted> and counters stay empty. Pattern matching is case-insensitive glob matching.\n\nRun the same pytest command for tests/test_tracebacks.py: 72 pass. Run it for tests: 912 pass, 21 skip. The traceback results overlap the package suite; do not add the counts. Existing optional/platform skips remain recorded rather than presented as passes. Original native final regression also reports 912 pass and 21 skip; native lines 693-694 bind actual lint and pytest commands/results. The implementation freezes the caller pattern sequence and applies the same redactor to all exception branches before rendering. Only selected local names are protected: exception text itself is intentionally not a content-secret scanner, as documented.\n\nlog-privacy-demo.py is a separate verification helper invoking the frozen source; it is not an application UI made by the model. The delivered 75-second, continuous 1280x720 video runs the helper, independent contract and delivered traceback tests. Recorded exits are all zero. Initial r1 recording had terminal repaint corruption at frame 43 and was retained/excluded; r2 was rerecorded without editing or hiding output. Product source and native trajectory are unchanged.",
+  "no_model_source_edits": true,
+  "native_trace_included": false
+}

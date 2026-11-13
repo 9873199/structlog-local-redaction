@@ -1,0 +1,28 @@
+All checks pass. The implementation is complete. Here's a summary of the work.
+
+## 实现概要
+
+### 核心改动：`src/structlog/tracebacks.py`
+
+1. **新增 `redact_locals` 参数**（`extract()` 和 `ExceptionDictTransformer` 都支持）：接受一组大小写不敏感的 `fnmatch` glob 模式，如 `("password", "*token*")`。
+2. **新增私有 `_LocalsRedactor`**：构造时把模式小写并冻结成 tuple；匹配时对变量名小写后用 `fnmatch.fnmatchcase` 比较。
+3. **渲染前拦截**（`_render_locals`）：命中的变量保留名字、值固定为 `"<redacted>"`（模块常量 `REDACTED`），三元表达式保证 `to_repr()`（包括 `repr`/`str`/Rich `__rich_repr__`/递归遍历）永远不会作用于该值。
+4. **未命中的变量**仍走现有的 `locals_max_length`、`locals_max_string`、dunder/sunder 隐藏规则；且命中的名字优先于隐藏规则（`__password` 也能保留名字）。
+5. **冻结副本**：transformer 存 `self.redact_locals` 为 tuple，外部修改原列表不影响运行策略（有专门测试）。
+6. **全链路覆盖**：cause/context/ExceptionGroup 递归调用都透传同一规则；新增私有 `_suppress` 参数让被 suppress 的帧在 `extract()` 阶段就不触碰任何局部值（而不是渲染后再删）；`show_locals=False` 同理。
+7. 文档字符串明确声明：**只保证按变量名选中的 locals 不被展开，异常消息本身的敏感文字不会被自动识别**。
+
+### 测试：`tests/test_tracebacks.py`（新增 10 个测试，912 passed）
+
+- `CountingSecret`：`__repr__`/`__str__` 计数并抛异常，`__rich_repr__` 计数——选中处计数必须为零。
+- 普通异常（Rich 开/关两种路径、大写模式验证大小写不敏感）、未命中变量保留普通输出与截断规则、dunder 优先级、直接调 `extract()`。
+- 显式 cause + 隐式 context 链，同一敏感对象以 `db_password`/`access_token`/`api_token` 不同名字出现，全部红化且计数为零。
+- ExceptionGroup 两条分支不同变量名（3.11+ 跳过），Rich 真实链路下计数为零。
+- 冻结副本、`show_locals=False`/suppress 不触碰值、`ExceptionRenderer(自定义 transformer) + JSONRenderer` 完整监控链路、默认输出不变。
+
+### 其他
+
+- `docs/exceptions.md`：新增 "Redacting Local Variables" 章节，含可直接接入监控的简短配置示例（已实测通过）。
+- `docs/recipes.md`：旧的后处理方案标注了"repr 副作用无法阻止"的局限并指向新参数。
+- `CHANGELOG.md`、`typing_tests/api.py` 同步更新。
+- ruff check/format、mypy（`tracebacks.py` 零错误）、interrogate 全部通过；新增代码测试覆盖率 100%（模块 99%，未覆盖行为原有）。

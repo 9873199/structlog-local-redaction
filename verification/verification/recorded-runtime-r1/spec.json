@@ -1,0 +1,67 @@
+{
+  "title": "Private exception details",
+  "directory": "D:\\hc\\userFeedback\\cache\\execution-security-new11-20261112\\evaluation\\uf-20261112-new15-logs\\recording\\r2",
+  "cwd": "D:\\hc\\userFeedback\\cache\\execution-security-new11-20261112\\evaluation\\uf-20261112-new15-logs\\verification\\acceptance-r1\\replay-source",
+  "capture": "wgc",
+  "console_start_delay_seconds": 15,
+  "environment": {
+    "PYTHONPATH": "D:\\hc\\userFeedback\\cache\\execution-security-new11-20261112\\evaluation\\uf-20261112-new15-logs\\verification\\acceptance-r1\\replay-source\\src;D:\\hc\\userFeedback\\cache\\execution-security-new11-20261112\\evaluation\\uf-20261112-new15-logs\\verification\\acceptance-r1\\replay-source;D:\\hc\\userFeedback\\cache\\execution-security-new11-20261112\\evaluation\\uf-20261112-new15-logs\\verification\\acceptance-r1",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "PYTHONUTF8": "1"
+  },
+  "commands": [
+    {
+      "id": "privacy-demo",
+      "label": "Structured logging with selected private local names",
+      "display": "python log-privacy-demo.py",
+      "argv": [
+        "D:\\hc\\userFeedback\\cache\\execution-security-new11-20261112\\tasks\\logs\\env\\Scripts\\python.exe",
+        "-B",
+        "D:\\hc\\userFeedback\\cache\\execution-security-new11-20261112\\evaluation\\uf-20261112-new15-logs\\verification\\acceptance-r1\\log-privacy-demo.py"
+      ],
+      "start_at_seconds": 0
+    },
+    {
+      "id": "privacy-contract",
+      "label": "Exception branches, hidden frames and JSON output checks",
+      "display": "python -m pytest test_locals_contract.py -q",
+      "argv": [
+        "D:\\hc\\userFeedback\\cache\\execution-security-new11-20261112\\tasks\\logs\\env\\Scripts\\python.exe",
+        "-B",
+        "-m",
+        "pytest",
+        "-q",
+        "-o",
+        "addopts=",
+        "-p",
+        "no:cacheprovider",
+        "--tb=short",
+        "D:\\hc\\userFeedback\\cache\\execution-security-new11-20261112\\evaluation\\uf-20261112-new15-logs\\verification\\acceptance-r1\\test_locals_contract.py",
+        "--basetemp",
+        "D:\\hc\\userFeedback\\cache\\execution-security-new11-20261112\\evaluation\\uf-20261112-new15-logs\\recording\\r2\\tmp-contract"
+      ],
+      "start_at_seconds": 22
+    },
+    {
+      "id": "traceback-suite",
+      "label": "Existing traceback behavior and new privacy regression tests",
+      "display": "python -m pytest tests/test_tracebacks.py -q",
+      "argv": [
+        "D:\\hc\\userFeedback\\cache\\execution-security-new11-20261112\\tasks\\logs\\env\\Scripts\\python.exe",
+        "-B",
+        "-m",
+        "pytest",
+        "-q",
+        "-o",
+        "addopts=",
+        "-p",
+        "no:cacheprovider",
+        "--tb=short",
+        "tests/test_tracebacks.py",
+        "--basetemp",
+        "D:\\hc\\userFeedback\\cache\\execution-security-new11-20261112\\evaluation\\uf-20261112-new15-logs\\recording\\r2\\tmp-tracebacks"
+      ],
+      "start_at_seconds": 47
+    }
+  ]
+}

@@ -1,0 +1,76 @@
+{
+  "uid": 1747,
+  "run_id": "uf-20261112-new15-logs",
+  "reviewed": true,
+  "reviewer": "Codex primary reviewer",
+  "frozen_trace_sha256": "ae50387e8288df1ac779f1dfa980afbd44356dc1938f29bf1b7beb9284fd4ddf",
+  "revision": "acceptance-r1",
+  "product_modules": [
+    "structlog",
+    "structlog.tracebacks"
+  ],
+  "support_files": [
+    {
+      "source": "D:\\hc\\userFeedback\\cache\\execution-security-new11-20261112\\logs-independent-tests.py",
+      "path": "test_locals_contract.py",
+      "sha256": "523a32b2b0e0a896e93e0039223c0bedd76cdb5dbbe94a7fea22e6bbadf3d0e5"
+    }
+  ],
+  "commands": [
+    {
+      "name": "locals-contract",
+      "argv": [
+        "{python}",
+        "-B",
+        "-m",
+        "pytest",
+        "-q",
+        "-o",
+        "addopts=",
+        "-p",
+        "no:cacheprovider",
+        "--tb=short",
+        "{verification}/test_locals_contract.py",
+        "--basetemp",
+        "{verification}/tmp-contract"
+      ]
+    },
+    {
+      "name": "traceback-suite",
+      "argv": [
+        "{python}",
+        "-B",
+        "-m",
+        "pytest",
+        "-q",
+        "-o",
+        "addopts=",
+        "-p",
+        "no:cacheprovider",
+        "--tb=short",
+        "tests/test_tracebacks.py",
+        "--basetemp",
+        "{verification}/tmp-tracebacks"
+      ]
+    },
+    {
+      "name": "package-suite",
+      "argv": [
+        "{python}",
+        "-B",
+        "-m",
+        "pytest",
+        "-q",
+        "-o",
+        "addopts=",
+        "-p",
+        "no:cacheprovider",
+        "--tb=short",
+        "tests",
+        "--basetemp",
+        "{verification}/tmp-package"
+      ],
+      "timeout": 300
+    }
+  ]
+}

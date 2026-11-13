@@ -1,0 +1,52 @@
+[
+  {
+    "id": "privacy-demo",
+    "argv": [
+      "D:\\hc\\userFeedback\\cache\\execution-security-new11-20261112\\tasks\\logs\\env\\Scripts\\python.exe",
+      "-B",
+      "D:\\hc\\userFeedback\\cache\\execution-security-new11-20261112\\evaluation\\uf-20261112-new15-logs\\verification\\acceptance-r1\\log-privacy-demo.py"
+    ],
+    "exit_code": 0,
+    "finished_at_seconds": 2.47
+  },
+  {
+    "id": "privacy-contract",
+    "argv": [
+      "D:\\hc\\userFeedback\\cache\\execution-security-new11-20261112\\tasks\\logs\\env\\Scripts\\python.exe",
+      "-B",
+      "-m",
+      "pytest",
+      "-q",
+      "-o",
+      "addopts=",
+      "-p",
+      "no:cacheprovider",
+      "--tb=short",
+      "D:\\hc\\userFeedback\\cache\\execution-security-new11-20261112\\evaluation\\uf-20261112-new15-logs\\verification\\acceptance-r1\\test_locals_contract.py",
+      "--basetemp",
+      "D:\\hc\\userFeedback\\cache\\execution-security-new11-20261112\\evaluation\\uf-20261112-new15-logs\\recording\\r2\\tmp-contract"
+    ],
+    "exit_code": 0,
+    "finished_at_seconds": 25.05
+  },
+  {
+    "id": "traceback-suite",
+    "argv": [
+      "D:\\hc\\userFeedback\\cache\\execution-security-new11-20261112\\tasks\\logs\\env\\Scripts\\python.exe",
+      "-B",
+      "-m",
+      "pytest",
+      "-q",
+      "-o",
+      "addopts=",
+      "-p",
+      "no:cacheprovider",
+      "--tb=short",
+      "tests/test_tracebacks.py",
+      "--basetemp",
+      "D:\\hc\\userFeedback\\cache\\execution-security-new11-20261112\\evaluation\\uf-20261112-new15-logs\\recording\\r2\\tmp-tracebacks"
+    ],
+    "exit_code": 0,
+    "finished_at_seconds": 49.65
+  }
+]

@@ -1,0 +1,9 @@
+Rich enabled: False
+Selected local values: {'password': '<redacted>', 'Access_TOKEN': '<redacted>', 'ordinary': "'visible business value'"}
+Sensitive object representation calls: []
+Caller pattern list changed after construction; policy retained: ('password', '*token*', 'secret*')
+Rich enabled: True
+Selected local values: {'password': '<redacted>', 'Access_TOKEN': '<redacted>', 'ordinary': "'visible business value'"}
+Sensitive object representation calls: []
+Caller pattern list changed after construction; policy retained: ('password', '*token*', 'secret*')
+Only selected local names are protected; exception text keeps its normal meaning.

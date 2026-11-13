@@ -1,0 +1,39 @@
+{
+  "process": [
+    {
+      "native_lines": [
+        687,
+        693,
+        694,
+        698,
+        699,
+        702
+      ],
+      "fact": "Added representation counters and real JSON chain; actual final lint and test output; reread core implementation."
+    }
+  ],
+  "product": [
+    {
+      "file": "src/structlog/tracebacks.py",
+      "functions": [
+        "_LocalsRedactor",
+        "_render_locals",
+        "extract",
+        "ExceptionDictTransformer"
+      ],
+      "fact": "Frozen patterns, match-before-render and early suppressed-frame handling; same policy across exception chains/groups."
+    }
+  ],
+  "requirements": {
+    "selected_names_and_representation": "test_locals_contract.py six direct/transformer/JSON plus Rich variants",
+    "branches_and_copy": "test_locals_contract.py chained/group and mutable list cases",
+    "default_compatibility": "test_locals_contract.py plus delivered tests/test_tracebacks.py and entire tests suite"
+  },
+  "no_product_edits": true,
+  "diversity": "D:\\hc\\userFeedback\\cache\\execution-security-new11-20261112\\engineering\\remaining-four-20261113-r1\\prelaunch-gates.json",
+  "time": "2026-11-13T18:12:31+08:00",
+  "uid": 1747,
+  "frozen_commit": "0da4f4c353df94595b753885b4bc248b78779f83",
+  "native_trace_sha256": "ae50387e8288df1ac779f1dfa980afbd44356dc1938f29bf1b7beb9284fd4ddf",
+  "no_model_source_changes_after_freeze": true
+}

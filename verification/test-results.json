@@ -1,0 +1,15 @@
+{
+  "independent": {
+    "passed": 13,
+    "failed": 0
+  },
+  "traceback_suite": {
+    "passed": 72
+  },
+  "package_suite": {
+    "passed": 912,
+    "skipped": 21
+  },
+  "overlapping_counts_not_summed": true,
+  "recording_revision": "r2"
+}
